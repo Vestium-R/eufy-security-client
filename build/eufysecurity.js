@@ -339,7 +339,7 @@ class EufySecurity extends tiny_typed_emitter_1.TypedEmitter {
                 logging_1.rootMainLogger.info("SecurityMQTT connected");
                 for (const device of Object.values(this.devices)) {
                     if (device.usesSecurityMqtt()) {
-                        this.securityMqttService.subscribeLock(device.getSerial(), device.getModel());
+                        this.securityMqttService.subscribeLock(device.getSerial(), device.getSecurityMqttTopicPrefix());
                     }
                 }
             });
@@ -446,7 +446,7 @@ class EufySecurity extends tiny_typed_emitter_1.TypedEmitter {
             if (device.isLock())
                 this.mqttService.subscribeLock(device.getSerial());
             if (device.usesSecurityMqtt() && this.securityMqttService) {
-                this.securityMqttService.subscribeLock(device.getSerial(), device.getModel());
+                this.securityMqttService.subscribeLock(device.getSerial(), device.getSecurityMqttTopicPrefix());
             }
         }
         else {
@@ -2491,7 +2491,7 @@ class EufySecurity extends tiny_typed_emitter_1.TypedEmitter {
             return;
         }
         const device = this.devices[deviceSN];
-        const deviceModel = device ? device.getModel() : deviceSN;
+        const deviceModel = device ? device.getSecurityMqttTopicPrefix() : deviceSN;
         this.securityMqttService
             .lockDevice(deviceSN, deviceModel, adminUserId, shortUserId, nickName, channel, sequence, lock)
             .then((success) => {

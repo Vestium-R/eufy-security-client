@@ -236,6 +236,8 @@ export declare class Device extends TypedEmitter<DeviceEvents> {
     getHardwareVersion(): string;
     getSoftwareVersion(): string;
     getModel(): string;
+    /** Returns the model prefix used in SecurityMQTT topic paths (e.g. "T85D0" not "T85D0C"). */
+    getSecurityMqttTopicPrefix(): string;
     getName(): string;
     getSerial(): string;
     getStationSerial(): string;

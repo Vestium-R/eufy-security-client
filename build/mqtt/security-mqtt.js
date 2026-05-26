@@ -131,7 +131,7 @@ class SecurityMQTTService extends tiny_typed_emitter_1.TypedEmitter {
             this.connectionState = ConnectionState.DISCONNECTED;
             throw new Error("SecurityMQTT: No MQTT certificates after authentication");
         }
-        const host = this.mqttInfo.endpoint_addr || this.getSecurityBrokerHost(apiBase);
+        const host = this.getSecurityBrokerHost(apiBase);
         this.clientId = this.buildClientId(host);
         logging_1.rootMQTTLogger.info(`SecurityMQTT connecting to ${host}:8883`, {
             clientId: this.clientId,

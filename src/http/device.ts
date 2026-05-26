@@ -3041,6 +3041,13 @@ export class Device extends TypedEmitter<DeviceEvents> {
     return this.rawDevice.device_model;
   }
 
+  /** Returns the model prefix used in SecurityMQTT topic paths (e.g. "T85D0" not "T85D0C"). */
+  public getSecurityMqttTopicPrefix(): string {
+    if (Device.isLockWifiT85D0(this.rawDevice.device_type)) return "T85D0";
+    if (Device.isLockWifiT85L0(this.rawDevice.device_type)) return "T85L0";
+    return this.rawDevice.device_model;
+  }
+
   public getName(): string {
     return this.rawDevice.device_name;
   }

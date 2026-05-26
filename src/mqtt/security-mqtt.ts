@@ -158,7 +158,7 @@ export class SecurityMQTTService extends TypedEmitter<SecurityMQTTServiceEvents>
       throw new Error("SecurityMQTT: No MQTT certificates after authentication");
     }
 
-    const host = this.mqttInfo.endpoint_addr || this.getSecurityBrokerHost(apiBase);
+    const host = this.getSecurityBrokerHost(apiBase);
     this.clientId = this.buildClientId(host);
 
     rootMQTTLogger.info(`SecurityMQTT connecting to ${host}:8883`, {
