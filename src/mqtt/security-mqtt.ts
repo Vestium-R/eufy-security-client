@@ -158,12 +158,14 @@ export class SecurityMQTTService extends TypedEmitter<SecurityMQTTServiceEvents>
       throw new Error("SecurityMQTT: No MQTT certificates after authentication");
     }
 
-    const host = this.getSecurityBrokerHost(apiBase);
+    const host = this.mqttInfo.endpoint_addr || this.getSecurityBrokerHost(apiBase);
     this.clientId = this.buildClientId(host);
 
     rootMQTTLogger.info(`SecurityMQTT connecting to ${host}:8883`, {
       clientId: this.clientId,
       username: this.mqttInfo.thing_name,
+      endpointAddr: this.mqttInfo.endpoint_addr,
+      apiBase: apiBase,
     });
 
     this.client = mqtt.connect({
@@ -329,7 +331,7 @@ export class SecurityMQTTService extends TypedEmitter<SecurityMQTTServiceEvents>
       throw new Error(`MQTT certs failed: ${JSON.stringify(mqttCertRes.data)}`);
     }
     this.mqttInfo = mqttCertRes.data.data as MQTTCertInfo;
-    rootMQTTLogger.debug("SecurityMQTT certs OK", {
+    rootMQTTLogger.info("SecurityMQTT certs OK", {
       thingName: this.mqttInfo.thing_name,
       endpointAddr: this.mqttInfo.endpoint_addr,
     });
