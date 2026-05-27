@@ -11,6 +11,7 @@ export declare class Station extends TypedEmitter<StationEvents> {
     private api;
     private rawStation;
     private p2pSession;
+    private securityMqttConnected;
     private properties;
     private rawProperties;
     private ready;
@@ -84,6 +85,7 @@ export declare class Station extends TypedEmitter<StationEvents> {
     getGuardMode(): PropertyValue;
     getCurrentMode(): PropertyValue;
     processPushNotification(message: PushMessage): void;
+    setSecurityMqttConnected(value: boolean): void;
     isConnected(): boolean;
     close(): void;
     isEnergySavingDevice(): boolean;

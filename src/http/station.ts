@@ -181,6 +181,7 @@ export class Station extends TypedEmitter<StationEvents> {
   private rawStation: StationListResponse;
 
   private p2pSession: P2PClientProtocol;
+  private securityMqttConnected = false;
   private properties: PropertyValues = {};
   private rawProperties: RawValues = {};
   private ready = false;
@@ -998,8 +999,12 @@ export class Station extends TypedEmitter<StationEvents> {
     }
   }
 
+  public setSecurityMqttConnected(value: boolean): void {
+    this.securityMqttConnected = value;
+  }
+
   public isConnected(): boolean {
-    return this.p2pSession.isConnected();
+    return this.p2pSession.isConnected() || this.securityMqttConnected;
   }
 
   public close(): void {

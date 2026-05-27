@@ -20,6 +20,7 @@ class Station extends tiny_typed_emitter_1.TypedEmitter {
     api;
     rawStation;
     p2pSession;
+    securityMqttConnected = false;
     properties = {};
     rawProperties = {};
     ready = false;
@@ -726,8 +727,11 @@ class Station extends tiny_typed_emitter_1.TypedEmitter {
             this.updateRawProperty(types_2.CommandType.CMD_GET_TFCARD_STATUS, message.tfcard_status.toString(), "push");
         }
     }
+    setSecurityMqttConnected(value) {
+        this.securityMqttConnected = value;
+    }
     isConnected() {
-        return this.p2pSession.isConnected();
+        return this.p2pSession.isConnected() || this.securityMqttConnected;
     }
     close() {
         this.terminating = true;

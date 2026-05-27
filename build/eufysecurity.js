@@ -340,11 +340,25 @@ class EufySecurity extends tiny_typed_emitter_1.TypedEmitter {
                 for (const device of Object.values(this.devices)) {
                     if (device.usesSecurityMqtt()) {
                         this.securityMqttService.subscribeLock(device.getSerial(), device.getSecurityMqttTopicPrefix());
+                        const station = this.stations[device.getStationSerial()];
+                        if (station && !station.isConnected()) {
+                            station.setSecurityMqttConnected(true);
+                            station.emit("connect", station);
+                        }
                     }
                 }
             });
             this.securityMqttService.on("close", () => {
                 logging_1.rootMainLogger.info("SecurityMQTT disconnected");
+                for (const device of Object.values(this.devices)) {
+                    if (device.usesSecurityMqtt()) {
+                        const station = this.stations[device.getStationSerial()];
+                        if (station) {
+                            station.setSecurityMqttConnected(false);
+                            station.emit("close", station);
+                        }
+                    }
+                }
             });
             this.securityMqttService.on("lock status", (deviceSN, locked, battery) => {
                 this.getDevice(deviceSN)
@@ -667,6 +681,9 @@ class EufySecurity extends tiny_typed_emitter_1.TypedEmitter {
     }
     onStationConnect(station) {
         this.emit("station connect", station);
+        if (device_1.Device.usesSecurityMqtt(station.getDeviceType())) {
+            return;
+        }
         this.refreshP2PData(station);
         if (this.refreshEufySecurityP2PTimeout[station.getSerial()] !== undefined) {
             clearTimeout(this.refreshEufySecurityP2PTimeout[station.getSerial()]);
